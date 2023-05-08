@@ -1,0 +1,30 @@
+pipeline {
+    agent any
+    tools{ 
+        nodejs '17.8.0'
+    }
+    options{
+        skipDefaultCheckout('false')
+        disableConcurrentBuilds()
+    }
+    /*parameters { 
+        choice(name: 'OPTION', choices: ['export', 'import'], description: 'Choose import or export')
+    }*/
+    stages{
+        stage("Install tool"){
+            steps{
+                sh 'npm install -g auth0-deploy-cli'
+            }
+        }
+        stage("Export data"){
+            steps{
+                sh 'a0deploy export -c=bellconfig.json --format=yaml --output_folder=local'
+            }
+        }
+        stage("Import data"){
+            steps{
+                sh 'a0deploy import -c=bellconfig.json --debug=true --format=yaml --input_file=./local/tenant.yaml'
+            }
+        }
+    }
+}
