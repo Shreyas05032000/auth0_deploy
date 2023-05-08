@@ -1,7 +1,7 @@
 pipeline {
     agent any
     tools{ 
-        node '17.8.0'
+        nodejs '17.8.0'
     }
     options{
         skipDefaultCheckout('false')
